@@ -6,6 +6,7 @@ class DProduk extends StatefulWidget {
 }
 
 class _DProdukState extends State<DProduk> {
+  TextEditingController _inputController = TextEditingController();
   final List<Widget> myList = [
     buildItem(1, 'Bando 1', 2000),
     buildItem(2, 'Bando 21', 6000),
@@ -68,6 +69,7 @@ class _DProdukState extends State<DProduk> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 50, 49, 49),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -81,20 +83,43 @@ class _DProdukState extends State<DProduk> {
           actions: [
             IconButton(
               icon: Icon(Icons.refresh),
-              onPressed: () {
-                // Add your search logic here
-              },
+              onPressed: () {},
             ),
           ],
         ),
-        body: ListView.builder(
-          itemCount: myList.length,
-          itemBuilder: (context, index) {
-            return myList[index];
-          },
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _inputController,
+                decoration: InputDecoration(
+                    labelText: 'Filter Produk',
+                    border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        _inputController.clear();
+                      },
+                    )),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: myList.length,
+                itemBuilder: (context, index) {
+                  return myList[index];
+                },
+              ),
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            // Access the input value using _inputController.text
+            String inputValue = _inputController.text;
+            print('Input Value: $inputValue');
+          },
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ),
